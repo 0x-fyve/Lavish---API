@@ -11,3 +11,12 @@ class ExpenseSerializer(serializers.ModelSerializer):
             "category",
             "date",
         ]
+
+        def create(self, request, validated_data):
+            Expense.objects.create(
+                user = request.user,
+                title = validated_data["title"],
+                amount = validated_data["amount"],
+                category = validated_data["category"],
+                date = validated_data["date"]
+            )
