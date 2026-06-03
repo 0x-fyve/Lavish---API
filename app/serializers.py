@@ -1,19 +1,21 @@
 from rest_framework import serializers
-from .models import Expense, Income, Budget
+from .models import Transaction, Budget
 
 
 class ExpenseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Expense
+        model = Transaction
         fields = [
             "title",
+            "transaction_type"
             "amount",
             "category",
+            "description",
             "date",
         ]
 
         def create(self, request, validated_data):
-            Expense.objects.create(
+            Transaction.objects.create(
                 user = request.user,
                 title = validated_data["title"],
                 amount = validated_data["amount"],
