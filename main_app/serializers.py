@@ -42,7 +42,6 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         return value
     
-
     def validate_category(self, category):
 
         user = self.context["request"].user
@@ -53,7 +52,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             )
 
         return category
-    
+
     def validate(self, attrs):
 
         category = attrs["category"]
@@ -69,4 +68,5 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         return attrs
     
+
 

@@ -42,21 +42,40 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         ) 
 
     def get_queryset(self):
-        return Transaction.objects.filter(
-            user = self.request.user
+        query_set = []
+        query_set = Transaction.objects.filter(
+           user = self.request.user
         )
+
+        transaction_type = self.request.query_params.get("type")
+        category = self.request.query_params.get("category")
+
+        if transaction_type:
+            query_set =  Transaction.objects.filter(
+                user=self.request.user,
+                transaction_type=transaction_type
+            )
+
+        if category:
+            query_set =  Transaction.objects.filter(
+                user=self.request.user,
+                category__name=category
+            )    
+
+
+        return query_set
 
 class TransactionDetialView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-
         return (
             Transaction.objects
             .filter(user=self.request.user)
             .select_related("category")
         )
+    
         
 
             
