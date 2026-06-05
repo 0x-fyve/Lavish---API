@@ -9,22 +9,16 @@ urlpatterns = [
         "categories/",
         CategoryListCreateView.as_view()
     ),
-
     path(
         "categories/<int:pk>/",
         CategoryDetailView.as_view()
     ),
     path(
-        "transaction/",
-        CategoryListCreateView.as_view(
-        )
-    ),
-    path(
-        "transaction/",
+        "transactions/",
         TransactionListCreateView.as_view()
     ),
     path(
-        "transaction/",
+        "transaction/<int:>",
         TransactionDetialView.as_view()
     ),
 ]
