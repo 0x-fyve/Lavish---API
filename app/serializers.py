@@ -42,15 +42,31 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         return value
     
+
+    def validate_category(self, category):
+
+        user = self.context["request"].user
+
+        if category.user != user:
+            raise serializers.ValidationError(
+                "Invalid category."
+            )
+
+        return category
+    
     def validate(self, attrs):
 
-        if (
-            attrs["transaction_type"] == "expense"
-            and attrs["amount"] > 1000000
-        ):
+        category = attrs["category"]
+        transaction_type = attrs["transaction_type"]
+
+        if category.category_type != transaction_type:
             raise serializers.ValidationError(
-                "Expense too large."
+                {
+                    "transaction_type":
+                    "Must match category type."
+                }
             )
+
         return attrs
-  
+    
 

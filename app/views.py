@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import TransactionSerializer, CategorySerializer
-from .models import Category
+from .models import Category, Transaction
 from rest_framework import generics
 # Create your views here.
 class CategoryListCreateView(generics.ListCreateAPIView):
@@ -31,4 +31,32 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Category.objects.filter(
             user=self.request.user
         )        
+    
+class TransactionListCreateView(generics.ListCreateAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(
+            user = self.request.user
+        ) 
+
+    def get_queryset(self):
+        return Transaction.objects.filter(
+            user = self.request.user
+        )
+
+class TransactionDetialView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = TransactionSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+
+        return (
+            Transaction.objects
+            .filter(user=self.request.user)
+            .select_related("category")
+        )
+        
+
             
