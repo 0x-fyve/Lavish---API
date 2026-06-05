@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import (
     CategoryListCreateView,
-    CategoryDetailView,
+    CategoryDetailView, TransactionListCreateView, TransactionDetialView
 )
 
 urlpatterns = [
@@ -13,5 +13,18 @@ urlpatterns = [
     path(
         "categories/<int:pk>/",
         CategoryDetailView.as_view()
+    ),
+    path(
+        "transaction/",
+        CategoryListCreateView.as_view(
+        )
+    ),
+    path(
+        "transaction/",
+        TransactionListCreateView.as_view()
+    ),
+    path(
+        "transaction/",
+        TransactionDetialView.as_view()
     ),
 ]
