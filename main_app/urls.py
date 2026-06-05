@@ -18,7 +18,7 @@ urlpatterns = [
         TransactionListCreateView.as_view()
     ),
     path(
-        "transaction/<int:>",
+        "transactions/<int:pk>",
         TransactionDetialView.as_view()
     ),
 ]
