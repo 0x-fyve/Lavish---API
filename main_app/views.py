@@ -58,7 +58,10 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 date__gte=start_date
             )
 
-        
+        if end_date:
+            queryset = queryset.filter(
+                date__lte=end_date
+            )
 
         if transaction_type:
             query_set =  Transaction.objects.filter(
