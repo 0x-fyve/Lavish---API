@@ -50,6 +50,16 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         transaction_type = self.request.query_params.get("type")
         category = self.request.query_params.get("category")
 
+        start_date = self.request.query_params.get("start_date")
+        end_date = self.request.query_params.get("end_date")
+
+        if start_date:
+            queryset = queryset.filter(
+                date__gte=start_date
+            )
+
+        
+
         if transaction_type:
             query_set =  Transaction.objects.filter(
                 user=self.request.user,
@@ -60,7 +70,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
             query_set =  Transaction.objects.filter(
                 user=self.request.user,
                 category__name=category
-            )    
+            )        
 
 
         return query_set
