@@ -75,7 +75,6 @@ class TransactionListCreateView(generics.ListCreateAPIView):
                 category__name=category
             )        
 
-
         return query_set
 
 class TransactionDetialView(generics.RetrieveUpdateDestroyAPIView):

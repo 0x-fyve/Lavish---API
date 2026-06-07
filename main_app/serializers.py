@@ -68,5 +68,14 @@ class TransactionSerializer(serializers.ModelSerializer):
 
         return attrs
     
+class BudgetSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Budget
+        fields = [
+            "id",
+            "category",
+            "limit"
+        ]
 
 
