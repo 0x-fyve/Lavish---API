@@ -6,7 +6,9 @@ from rest_framework import status
 from .serializers import TransactionSerializer, CategorySerializer
 from .models import Category, Transaction
 from rest_framework import generics
+from django.db.models import Sum
 # Create your views here.
+
 class CategoryListCreateView(generics.ListCreateAPIView):
 
     serializer_class = CategorySerializer
@@ -54,16 +56,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         end_date = self.request.query_params.get("end_date")
         order = self.request.query_params.get("ordering")
 
-        if start_date:
-            queryset = queryset.filter(
-                date__gte=start_date
-            )
-
-        if end_date:
-            queryset = queryset.filter(
-                date__lte=end_date
-            )
-
+        
         if transaction_type:
             query_set =  Transaction.objects.filter(
                 user=self.request.user,
@@ -86,6 +79,17 @@ class TransactionListCreateView(generics.ListCreateAPIView):
         if order in allowed_fields:
             queryset = queryset.order_by(order)   
 
+        if start_date:
+            queryset = queryset.filter(
+                date__gte=start_date
+            )
+
+        if end_date:
+            queryset = queryset.filter(
+                date__lte=end_date
+            )
+    
+
         return query_set
 
 class TransactionDetialView(generics.RetrieveUpdateDestroyAPIView):
@@ -98,6 +102,18 @@ class TransactionDetialView(generics.RetrieveUpdateDestroyAPIView):
             .filter(user=self.request.user)
             .select_related("category")
         )
+
+class AnalyticsSummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        income = Transaction.objects.filter(
+            user = request.user,
+            transaction_type = income
+        ).aggregate(total=Sum("amount"))
+
+
     
         
 
