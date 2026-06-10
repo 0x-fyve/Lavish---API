@@ -118,6 +118,15 @@ class AnalyticsSummaryView(APIView):
             transaction_type="expense"
         ).aggregate(total=Sum("amount"))
 
+        total_income = income["total"] or 0
+        total_expense = expense["total"] or 0
+
+        return Response({
+            "total_income": total_income,
+            "total_expense": total_expense,
+            "balance": total_income - total_expense,
+        })
+
 
     
         
