@@ -110,7 +110,12 @@ class AnalyticsSummaryView(APIView):
 
         income = Transaction.objects.filter(
             user = request.user,
-            transaction_type = income
+            transaction_type ="income"
+        ).aggregate(total=Sum("amount"))
+
+        expense = Transaction.objects.filter(
+            user = request.user,
+            transaction_type="expense"
         ).aggregate(total=Sum("amount"))
 
 
