@@ -52,6 +52,7 @@ class TransactionListCreateView(generics.ListCreateAPIView):
 
         start_date = self.request.query_params.get("start_date")
         end_date = self.request.query_params.get("end_date")
+        order = self.request.query_params.get("ordering")
 
         if start_date:
             queryset = queryset.filter(
@@ -73,7 +74,17 @@ class TransactionListCreateView(generics.ListCreateAPIView):
             query_set =  Transaction.objects.filter(
                 user=self.request.user,
                 category__name=category
-            )        
+            )   
+
+        allowed_fields = [
+            "amount",
+            "-amount",
+            "date",
+            "-date",
+        ]
+
+        if order in allowed_fields:
+            queryset = queryset.order_by(order)   
 
         return query_set
 
