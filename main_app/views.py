@@ -127,6 +127,14 @@ class AnalyticsSummaryView(APIView):
             "balance": total_income - total_expense,
         })
 
+class CategorySummaryView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        income = Category.object.filter(user=request.user, category_type =income)
+        expense = Category.object.filter(user=request.user, Category_type=expense)
+
+
 
     
         
